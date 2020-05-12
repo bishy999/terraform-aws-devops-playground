@@ -23,6 +23,7 @@ jobs:
     - stage: terraform plan
       script:
         - echo "Executing Terraform Plan"
+        - terraform -version
         - terraform init $tf_workdir
         - terraform validate $tf_workdir
         - terraform plan $tf_workdir
