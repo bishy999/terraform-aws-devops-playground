@@ -3,7 +3,7 @@ dist: xenial # Ubuntu 16.04
 language: bash
 
 env:
-  - tf_version=0.12.24 tf_init_cli_options="-input=false" tf_validation_cli_options="examples/golang-hello-world-webapp" tf_plan_cli_options="-lock=false -input=false" tf_apply_cli_options="-auto-approve -input=false"
+  - tf_version=0.12.24 tf_workdir="examples/golang-hello-world-webapp"
 
 # Only build pushes to master branch
 branches:
@@ -23,7 +23,6 @@ jobs:
     - stage: terraform plan
       script:
         - echo "Executing Terraform Plan"
-        - terraform init $tf_init_cli_options
-        - terraform validate $tf_validation_cli_options
-        - terraform plan examples/golang-hello-world-webapp
-        - terraform plan $tf_plan_cli_options
+        - terraform init $tf_workdir
+        - terraform validate $tf_workdir
+        - terraform plan $tf_workdir
