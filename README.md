@@ -35,6 +35,7 @@ A "Hello World" golang webapp deployed to AWS using terraform
 
 git clone https://github.com/bishy999/terraform-aws-devops-playground .
 cd examples/golang-hello-world-webapp
+Update specific values in main.tf
 ```
 
 ### Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc
