@@ -3,6 +3,7 @@ A "Hello World" golang webapp deployed to AWS using terraform
 
 
 ## Status
+[![Build Status](https://travis-ci.com/bishy999/terraform-aws-devops-playground.svg?branch=master)](https://travis-ci.com/bishy999/terraform-aws-devops-playground)
 ![GitHub Repo size](https://img.shields.io/github/repo-size/bishy999/terraform-aws-devops-playground)
 [![GitHub Tag](https://img.shields.io/github/tag/bishy999/terraform-aws-devops-playground.svg)](https://github.com/bishy999/terraform-aws-devops-playground/releases/latest)
 [![GitHub Activity](https://img.shields.io/github/commit-activity/m/bishy999/terraform-aws-devops-playground)](https://github.com/bishy999/terraform-aws-devops-playground)
@@ -56,6 +57,14 @@ terraform apply
 or
 
 terraform apply -auto-approve
+```
+
+
+### check app is working via browser/cli
+ 
+```
+https://{domain_name}
+curl https://domain_name
 ```
 
 ### Reads an output variable from a Terraform state file and prints the value

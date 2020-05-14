@@ -49,6 +49,7 @@ module "mydemo_simple_mywebapp" {
   instance_type = "t2.micro"
   key_name      = "terraform"
   domain_name   = "devopscork.com"
+  webapp_version = 1.8
 
   tags = {
     Owner       = "jdoe"

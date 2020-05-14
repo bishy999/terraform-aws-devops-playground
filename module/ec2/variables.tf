@@ -69,6 +69,11 @@ variable "domain_name" {
   description = "Domain name"
 }
 
+variable webapp_version {
+  description = "version of the webapp to use"
+}
+
+
 
 ################
 # Load Balancer
