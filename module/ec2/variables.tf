@@ -16,11 +16,15 @@ variable "protocol" {
   default = "tcp"
 }
 
-variable "whitelist_myip" {
-  description = "My IP "
+variable "whitelist_ip_ssh" {
+  description = "IP adresses to allow ssh access "
 }
 
-variable "whitelist_mycidr" {
+variable "whitelist_ip_https" {
+  description = "IP adresses to allow ssh access "
+}
+
+variable "whitelist_ip_vpc" {
   description = "CIDR of vpc"
 }
 
@@ -73,14 +77,8 @@ variable webapp_version {
   description = "version of the webapp to use"
 }
 
-
-
-################
-# Load Balancer
-################
-variable "forwarding_config" {
-  default = {
-    80  = "TCP"
-    443 = "TCP" # and so on
-  }
+variable dockerhub_repo {
+  description = "name of repo"
 }
+
+

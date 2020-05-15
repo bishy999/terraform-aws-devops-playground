@@ -38,18 +38,22 @@ module "mydemo_vpc" {
 module "mydemo_simple_mywebapp" {
   source = "../../module/ec2"
 
-  vpc_id           = module.mydemo_vpc.vpc_id
-  name             = module.mydemo_vpc.name
-  private_subnets  = module.mydemo_vpc.private_subnet_id
-  public_subnets   = module.mydemo_vpc.public_subnet_id
-  whitelist_mycidr = module.mydemo_vpc.vpc_cidr
-  whitelist_myip   = "93.95.87.27/32"
+  vpc_id             = module.mydemo_vpc.vpc_id
+  name               = module.mydemo_vpc.name
+  private_subnets    = module.mydemo_vpc.private_subnet_id
+  public_subnets     = module.mydemo_vpc.public_subnet_id
+  whitelist_ip_vpc   = module.mydemo_vpc.vpc_cidr
+  whitelist_ip_ssh   = module.mydemo_vpc.vpc_cidr
+  whitelist_ip_https = "0.0.0.0/0"
 
   ami           = "ami-035966e8adab4aaad"
   instance_type = "t2.micro"
   key_name      = "terraform"
   domain_name   = "devopscork.com"
-  webapp_version = 1.8
+
+  //DockerHub
+  webapp_version = "1.9-my-webapp"
+  dockerhub_repo = "bishy999/golang"
 
   tags = {
     Owner       = "jdoe"

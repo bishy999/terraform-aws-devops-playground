@@ -14,7 +14,7 @@ resource "aws_security_group_rule" "allow_https" {
   from_port         = var.https_port
   to_port           = var.https_port
   protocol          = var.protocol
-  cidr_blocks       = [var.whitelist_myip]
+  cidr_blocks       = [var.whitelist_ip_https]
 }
 
 resource "aws_security_group_rule" "allow_ssh" {
@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "allow_ssh" {
   from_port         = var.ssh_port
   to_port           = var.ssh_port
   protocol          = var.protocol
-  cidr_blocks       = [var.whitelist_myip]
+  cidr_blocks       = [var.whitelist_ip_ssh]
 }
 
 resource "aws_security_group_rule" "allow_outgoing" {
@@ -35,11 +35,11 @@ resource "aws_security_group_rule" "allow_outgoing" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "allow_mycidr" {
+resource "aws_security_group_rule" "allow_cidr" {
   type              = "ingress"
   security_group_id = aws_security_group.webserver_sg.id
   from_port         = "0"
   to_port           = "65535"
   protocol          = var.protocol
-  cidr_blocks       = [var.whitelist_mycidr]
+  cidr_blocks       = [var.whitelist_ip_vpc]
 }

@@ -1,8 +1,9 @@
-# Render a part using a `template_file`
+# Run specific user data when instances start up
 data "template_file" "user_data" {
   template = "${file("${path.module}/user_data.sh")}"
   vars = {
-    version = var.webapp_version
+    webapp_version = var.webapp_version
+    dockerhub_repo = var.dockerhub_repo
   }
 }
 
@@ -16,5 +17,5 @@ resource "aws_launch_configuration" "webapp" {
   lifecycle {
     create_before_destroy = true
   }
-  user_data = "${data.template_file.user_data.rendered}"
+  user_data = data.template_file.user_data.rendered
 }
