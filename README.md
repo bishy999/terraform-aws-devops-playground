@@ -1,5 +1,5 @@
 # terraform-aws-devops-playground
-A "Hello World" golang webapp deployed to AWS using terraform
+A "Hello World" golang webapp with Docker deployed to AWS using terraform
 
 
 ## Status
