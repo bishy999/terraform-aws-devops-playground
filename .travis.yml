@@ -3,7 +3,7 @@ dist: xenial # Ubuntu 16.04
 language: bash
 
 env:
-  - tf_version=0.12.24 tf_workdir="examples/golang-hello-world-webapp"
+  - tf_version=0.12.24 tf_workdir_example1="examples/golang-hello-world-webapp-ec2 tf_workdir_example2="examples/golang-hello-world-webapp-fargate
 
 # Only build pushes to master branch
 branches:
@@ -20,10 +20,17 @@ before_install:
 # Terraform Commands
 jobs:
   include:
-    - stage: terraform plan
+    - stage: terraform plan ec2 example
       script:
-        - echo "Executing Terraform Plan"
+        - echo "Executing Terraform ec2 example plan"
         - terraform -version
-        - terraform init $tf_workdir
-        - terraform validate $tf_workdir
-        - terraform plan $tf_workdir
+        - terraform init $tf_workdir_example1
+        - terraform validate $tf_workdir_example1
+        - terraform plan $tf_workdir_example1
+    - stage: terraform plan ecs fargate example
+      script:
+        - echo "Executing Terraform fargate plan"
+        - terraform -version
+        - terraform init $tf_workdir_example2
+        - terraform validate $tf_workdir_example2
+        - terraform plan $tf_workdir_example2

@@ -27,15 +27,28 @@ A "Hello World" Golang webapp with Docker deployed to AWS using Terraform
 | aws | ~> 2.61 |
 
 
-### Overview of what this will build
-![](images/DevopsPlayGround.png)
+### Overview of golang-hello-world-webapp-ec2
+![](images/DevopsPlayGround-EC2.png)
 
 
-### How to create
+### Overview of golang-hello-world-webapp-fargate
+![](images/DevopsPlayGround-ECS-Fargate.png)
+
+
+## How to create
+### Example golang-hello-world-webapp-ec2
 ```terraform
 
 git clone https://github.com/bishy999/terraform-aws-devops-playground .
-cd examples/golang-hello-world-webapp
+cd examples/golang-hello-world-webapp-ec2
+Update specific values to your setup in main.tf
+```
+
+### Example golang-hello-world-webapp-fargate
+```terraform
+
+git clone https://github.com/bishy999/terraform-aws-devops-playground .
+cd examples/golang-hello-world-webapp-fargate
 Update specific values to your setup in main.tf
 ```
 
