@@ -45,13 +45,13 @@ module "mydemo_ecs" {
 
   whitelist_ip_https = "0.0.0.0/0"
   domain_name        = "devopscork.com"
-  dockerhub_repo     = "bishy999/golang"
-  webapp_version     = "1.9-my-webapp"
-  webapp_port        = 8080
-  region             = "eu-west-1"
-  cpu                = 256
-  memory             = 512
 
+  webapp_version = "1.9-my-webapp"
+  webapp_port    = 8080
+  dockerhub_repo = "bishy999/golang"
+  region         = "eu-west-1"
+  cpu            = 256
+  memory         = 512
 
   tags = {
     Owner       = "jdoe"

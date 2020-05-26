@@ -45,15 +45,13 @@ module "mydemo_simple_mywebapp" {
   whitelist_ip_vpc   = module.mydemo_vpc.vpc_cidr
   whitelist_ip_ssh   = module.mydemo_vpc.vpc_cidr
   whitelist_ip_https = "0.0.0.0/0"
+  domain_name        = "devopscork.com"
 
-  ami           = "ami-035966e8adab4aaad"
-  instance_type = "t2.micro"
-  key_name      = "terraform"
-  domain_name   = "devopscork.com"
-
-  //DockerHub
   webapp_version = "1.9-my-webapp"
   dockerhub_repo = "bishy999/golang"
+  ami            = "ami-035966e8adab4aaad"
+  instance_type  = "t2.micro"
+  key_name       = "terraform"
 
   tags = {
     Owner       = "jdoe"
