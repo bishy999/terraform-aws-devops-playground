@@ -1,11 +1,11 @@
 module "mydemo_vpc" {
   source = "../../module/vpc"
 
-  name                 = "DevOpsPlayground"
+  name                 = "DevOpsFargatePlayground"
   region               = "eu-west-1"
   cidr_block           = "10.0.0.0/16"
-  enable_dns_support   = false
-  enable_dns_hostnames = false
+  enable_dns_support   = true
+  enable_dns_hostnames = true
 
   public_subnets = {
     "Public_A" = "10.0.1.0/24"
@@ -29,6 +29,8 @@ module "mydemo_vpc" {
     "Private_C" = "eu-west-1c"
   }
 
+
+
   tags = {
     Owner       = "jdoe"
     Environment = "Dev"
@@ -36,39 +38,47 @@ module "mydemo_vpc" {
   }
 }
 
-// Create ec2 instances in autoscaling group along with application load balancers
-module "mydemo_simple_mywebapp" {
-  source = "../../module/ec2"
 
-  vpc_id             = module.mydemo_vpc.vpc_id
-  name               = module.mydemo_vpc.name
-  private_subnets    = module.mydemo_vpc.private_subnet_id
-  public_subnets     = module.mydemo_vpc.public_subnet_id
-  whitelist_ip_vpc   = module.mydemo_vpc.vpc_cidr
-  whitelist_ip_ssh   = module.mydemo_vpc.vpc_cidr
+module "mydemo_ecs" {
+  source = "../../module/ecs"
+
+  vpc_id           = module.mydemo_vpc.vpc_id
+  ecs_cluster_name = module.mydemo_vpc.name
+  private_subnets  = module.mydemo_vpc.private_subnet_id
+  public_subnets   = module.mydemo_vpc.public_subnet_id
+
   whitelist_ip_https = "0.0.0.0/0"
   domain_name        = "devopscork.com"
+  region             = "eu-west-1"
 
-  webapp_version = "1.9-my-webapp"
-  dockerhub_repo = "bishy999/golang"
-  ami            = "ami-035966e8adab4aaad"
-  instance_type  = "t2.micro"
-  key_name       = "terraform"
+  webapp_version        = "1.16"
+  webapp_port           = 8080
+  webapp_dockerhub_repo = "bishy999/go-simple-webapp"
+  webapp_cpu            = 256 # fargate cpu setting different to ecs
+  webapp_memory         = 512
+
+  db_version        = "1.5"
+  db_port           = 3306
+  db_dockerhub_repo = "bishy999/mysql-simple-db"
+  db_cpu            = 256 # fargate cpu setting different to ecs
+  db_memory         = 512
+
+
 
   tags = {
     Owner       = "jdoe"
     Environment = "Dev"
     Team        = "ATeam"
   }
-
 }
+
 
 // Add alias record to route traffic to application load balancer
 module "mydemo_route53" {
   source = "../../module/route53"
 
   domain_name     = "devopscork.com"
-  alb_dns_name    = module.mydemo_simple_mywebapp.alb_dns_name
-  alb_dns_zone_id = module.mydemo_simple_mywebapp.alb_dns_zone_id
+  alb_dns_name    = module.mydemo_ecs.alb_dns_name
+  alb_dns_zone_id = module.mydemo_ecs.alb_dns_zone_id
 }
 

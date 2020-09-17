@@ -13,13 +13,13 @@ resource "aws_ecs_task_definition" "app" {
   family                   = "service"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.cpu
-  memory                   = var.memory
+  cpu                      = var.webapp_cpu
+  memory                   = var.webapp_memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_role.arn
   container_definitions = jsonencode([{
-    name      = "${var.ecs_cluster_name}-container"
-    image     = "${var.dockerhub_repo}:${var.webapp_version}"
+    name      = "${var.ecs_cluster_name}-webapp-container"
+    image     = "${var.webapp_dockerhub_repo}:${var.webapp_version}"
     essential = true
     portMappings = [{
       protocol      = var.protocol
@@ -45,8 +45,48 @@ resource "aws_ecs_task_definition" "app" {
   )
 }
 
-resource "aws_ecs_service" "main" {
-  name                               = "${var.ecs_cluster_name}-service"
+resource "aws_ecs_task_definition" "db" {
+  family                   = "service"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.db_cpu
+  memory                   = var.db_memory
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
+  container_definitions = jsonencode([{
+    name      = "${var.ecs_cluster_name}-db-container"
+    image     = "${var.db_dockerhub_repo}:${var.db_version}"
+    environment =  [
+            {"name": "hostname", "value": "mysql"},
+            {"name": "MYSQL_ROOT_PASSWORD", "value": "Password1"},
+        ],
+    essential = true
+    portMappings = [{
+      protocol      = var.protocol
+      containerPort = var.db_port
+      hostPort      = var.db_port
+    }]
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = aws_cloudwatch_log_group.main.name
+        awslogs-stream-prefix = "ecs"
+        awslogs-region        = var.region
+
+      }
+    }
+    }]
+  )
+  tags = merge(
+    {
+      "Name" = format("%s%s", var.ecs_cluster_name, "ECS")
+    },
+    var.tags,
+  )
+}
+
+resource "aws_ecs_service" "frontend" {
+  name                               = "${var.ecs_cluster_name}-frontend-service"
   cluster                            = aws_ecs_cluster.main.id
   task_definition                    = aws_ecs_task_definition.app.arn
   desired_count                      = 3
@@ -63,7 +103,7 @@ resource "aws_ecs_service" "main" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.alb_tg.arn
-    container_name   = "${var.ecs_cluster_name}-container"
+    container_name   = "${var.ecs_cluster_name}-webapp-container"
     container_port   = var.webapp_port
   }
 
@@ -82,6 +122,29 @@ resource "aws_ecs_service" "main" {
     },
     var.tags,
   )*/
+}
+
+resource "aws_ecs_service" "backend" {
+  name                               = "${var.ecs_cluster_name}-backend-service"
+  cluster                            = aws_ecs_cluster.main.id
+  task_definition                    = aws_ecs_task_definition.db.arn
+  desired_count                      = 1
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent         = 200
+  launch_type                        = "FARGATE"
+  scheduling_strategy                = "REPLICA"
+
+  network_configuration {
+    security_groups  = [aws_security_group.ecs_tasks.id]
+    subnets          = var.private_subnets
+    assign_public_ip = false
+  }
+
+
+  lifecycle {
+    ignore_changes = [task_definition, desired_count]
+  }
+
 }
 
 resource "aws_cloudwatch_log_group" "main" {

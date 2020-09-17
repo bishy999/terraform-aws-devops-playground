@@ -14,6 +14,14 @@ variable "cidr_block" {
   description = " The CIDR block for the VPC"
 }
 
+variable "enable_dns_support" {
+  description = "Enable dns support for service discovery"
+}
+
+variable "enable_dns_hostnames" {
+  description = "Enable dns hostname for service discovery"
+}
+
 variable "cidr_block_destination" {
   description = "all addresses "
   default     = "0.0.0.0/0"

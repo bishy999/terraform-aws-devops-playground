@@ -1,9 +1,11 @@
 module "mydemo_vpc" {
   source = "../../module/vpc"
 
-  name       = "DevOpsFargatePlayground"
-  region     = "eu-west-1"
-  cidr_block = "10.0.0.0/16"
+  name                 = "DevOpsFargatePlayground"
+  region               = "eu-west-1"
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = false
+  enable_dns_hostnames = false
 
   public_subnets = {
     "Public_A" = "10.0.1.0/24"

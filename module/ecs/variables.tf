@@ -33,6 +33,14 @@ variable webapp_port {
   description = "port to use in host/container"
 }
 
+variable db_version {
+  description = "version of the fb to use"
+}
+
+variable db_port {
+  description = "port to use in host/container"
+}
+
 variable protocol {
   default = "tcp"
 }
@@ -41,15 +49,27 @@ variable "whitelist_ip_https" {
   description = "IP adresses to allow ssh access "
 }
 
-variable dockerhub_repo {
-  description = "name of repo"
+variable webapp_dockerhub_repo {
+  description = "name of webapp repo"
 }
 
-variable cpu {
+variable db_dockerhub_repo {
+  description = "name of webapp repo"
+}
+
+variable webapp_cpu {
   description = "The number of cpu units used by the task"
 }
 
-variable memory {
+variable webapp_memory {
+  description = "The amount (in MiB) of memory used by the task"
+}
+
+variable db_cpu {
+  description = "The number of cpu units used by the task"
+}
+
+variable db_memory {
   description = "The amount (in MiB) of memory used by the task"
 }
 
