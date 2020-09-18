@@ -13,6 +13,16 @@ output "name" {
   value       = var.name
 }
 
+output "enable_dns_support" {
+  description = "enable dns support"
+  value       = var.enable_dns_support
+}
+
+output "enable_dns_hostnames" {
+  description = "enable dns hostnames"
+  value       = var.enable_dns_hostnames
+}
+
 output "private_subnet_id" {
   description = "ID of the private subnet"
   value       = [for r in aws_subnet.private : r.id]

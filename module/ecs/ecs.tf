@@ -20,6 +20,14 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode([{
     name      = "${var.ecs_cluster_name}-webapp-container"
     image     = "${var.webapp_dockerhub_repo}:${var.webapp_version}"
+    # Set the secrets from AWS Secrets Manager
+    environment =  [
+            {"name": "MYSQL_HOST", "value": "mysql.dev"},
+            {"name": "MYSQL_DB", "value": "demo"},
+            {"name": "MYSQL_USERNAME", "value": "root"},
+            {"name": "MYSQL_PASSWORD", "value": "Password1"},
+            {"name": "MYSQL_PORT", "value": "3306"},
+        ],
     essential = true
     portMappings = [{
       protocol      = var.protocol
@@ -56,6 +64,7 @@ resource "aws_ecs_task_definition" "db" {
   container_definitions = jsonencode([{
     name      = "${var.ecs_cluster_name}-db-container"
     image     = "${var.db_dockerhub_repo}:${var.db_version}"
+    # TODO Set the secrets from AWS Secrets Manager
     environment =  [
             {"name": "hostname", "value": "mysql"},
             {"name": "MYSQL_ROOT_PASSWORD", "value": "Password1"},
@@ -96,7 +105,7 @@ resource "aws_ecs_service" "frontend" {
   scheduling_strategy                = "REPLICA"
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id]
+    security_groups  = [aws_security_group.app_tasks.id]
     subnets          = var.private_subnets
     assign_public_ip = false
   }
@@ -135,9 +144,14 @@ resource "aws_ecs_service" "backend" {
   scheduling_strategy                = "REPLICA"
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id]
+    security_groups  = [aws_security_group.db_tasks.id]
     subnets          = var.private_subnets
     assign_public_ip = false
+  }
+
+   service_registries {
+      registry_arn = aws_service_discovery_service.db.arn
+      container_name = "${var.ecs_cluster_name}-db-container"
   }
 
 

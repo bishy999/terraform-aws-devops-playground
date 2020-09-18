@@ -51,13 +51,13 @@ module "mydemo_ecs" {
   domain_name        = "devopscork.com"
   region             = "eu-west-1"
 
-  webapp_version        = "1.16"
+  webapp_version        = "1.19"
   webapp_port           = 8080
   webapp_dockerhub_repo = "bishy999/go-simple-webapp"
   webapp_cpu            = 256 # fargate cpu setting different to ecs
   webapp_memory         = 512
 
-  db_version        = "1.5"
+  db_version        = "1.6"
   db_port           = 3306
   db_dockerhub_repo = "bishy999/mysql-simple-db"
   db_cpu            = 256 # fargate cpu setting different to ecs

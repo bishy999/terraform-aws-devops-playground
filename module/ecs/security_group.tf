@@ -29,7 +29,7 @@ resource "aws_security_group_rule" "alb_out" {
 }
 
 
-resource "aws_security_group" "ecs_tasks" {
+resource "aws_security_group" "app_tasks" {
   description = "Allow inbound access to the ecs from the ALB only"
   vpc_id      = var.vpc_id
 
@@ -50,7 +50,36 @@ resource "aws_security_group" "ecs_tasks" {
   }
   tags = merge(
     {
-      "Name" = format("%s%s", var.ecs_cluster_name, "SG_ECS")
+      "Name" = format("%s%s", var.ecs_cluster_name, "SG_ECS_APP")
+    },
+    var.tags,
+  )
+}
+
+
+
+resource "aws_security_group" "db_tasks" {
+  description = "Allow inbound access to the db tasks"
+  vpc_id      = var.vpc_id
+
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = 3306
+    to_port         = 3306
+    security_groups = [aws_security_group.app_tasks.id]
+
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = merge(
+    {
+      "Name" = format("%s%s", var.ecs_cluster_name, "SG_ECS_DB")
     },
     var.tags,
   )
