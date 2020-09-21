@@ -54,6 +54,9 @@ resource "aws_ecs_task_definition" "app" {
 }
 
 resource "aws_ecs_task_definition" "db" {
+
+  count = var.enable_db ? 1 : 0
+
   family                   = "service"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -134,9 +137,10 @@ resource "aws_ecs_service" "frontend" {
 }
 
 resource "aws_ecs_service" "backend" {
+  count = var.enable_db ? 1 : 0
   name                               = "${var.ecs_cluster_name}-backend-service"
   cluster                            = aws_ecs_cluster.main.id
-  task_definition                    = aws_ecs_task_definition.db.arn
+  task_definition                    = aws_ecs_task_definition.db[count.index].arn
   desired_count                      = 1
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200

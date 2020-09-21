@@ -33,14 +33,6 @@ variable webapp_port {
   description = "port to use in host/container"
 }
 
-variable db_version {
-  description = "version of the fb to use"
-}
-
-variable db_port {
-  description = "port to use in host/container"
-}
-
 variable protocol {
   default = "tcp"
 }
@@ -53,10 +45,6 @@ variable webapp_dockerhub_repo {
   description = "name of webapp repo"
 }
 
-variable db_dockerhub_repo {
-  description = "name of webapp repo"
-}
-
 variable webapp_cpu {
   description = "The number of cpu units used by the task"
 }
@@ -65,12 +53,34 @@ variable webapp_memory {
   description = "The amount (in MiB) of memory used by the task"
 }
 
+variable db_version {
+  description = "version of the fb to use"
+  default = "1.0"
+}
+
+variable db_port {
+  description = "port to use in host/container"
+   default = 3306
+}
+
 variable db_cpu {
   description = "The number of cpu units used by the task"
+  default = 256
 }
 
 variable db_memory {
   description = "The amount (in MiB) of memory used by the task"
+  default = 512
+}
+
+variable enable_db {
+  description = "The amount (in MiB) of memory used by the task"
+  default = false
+}
+
+variable db_dockerhub_repo {
+  description = "name of webapp repo"
+  default = "test"
 }
 
 

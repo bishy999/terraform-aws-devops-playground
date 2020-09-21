@@ -63,8 +63,6 @@ module "mydemo_ecs" {
   db_cpu            = 256 # fargate cpu setting different to ecs
   db_memory         = 512
 
-
-
   tags = {
     Owner       = "jdoe"
     Environment = "Dev"
