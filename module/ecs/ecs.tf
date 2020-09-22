@@ -154,7 +154,7 @@ resource "aws_ecs_service" "backend" {
   }
 
    service_registries {
-      registry_arn = aws_service_discovery_service.db.arn
+      registry_arn = aws_service_discovery_service.db[count.index].arn
       container_name = "${var.ecs_cluster_name}-db-container"
   }
 

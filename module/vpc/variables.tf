@@ -16,10 +16,12 @@ variable "cidr_block" {
 
 variable "enable_dns_support" {
   description = "Enable dns support for service discovery"
+  default     = true
 }
 
 variable "enable_dns_hostnames" {
   description = "Enable dns hostname for service discovery"
+  default     = false
 }
 
 variable "cidr_block_destination" {

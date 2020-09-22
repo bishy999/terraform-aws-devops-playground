@@ -1,5 +1,5 @@
 # terraform-aws-devops-playground
-A "Hello World" Golang webapp with Docker deployed to AWS using Terraform
+A "Hello World" Golang webapp with Docker deployed to AWS using Terraforms
 
 
 ## Status
@@ -35,6 +35,10 @@ A "Hello World" Golang webapp with Docker deployed to AWS using Terraform
 ![](images/DevopsPlayGround-ECS-Fargate.png)
 
 
+### Overview of golang-crud-webapp-fargate
+![](images/DevopsPlayGround-Fargate-Crud.png)
+
+
 ## How to create
 ### Example golang-hello-world-webapp-ec2
 ```terraform
@@ -51,6 +55,13 @@ git clone https://github.com/bishy999/terraform-aws-devops-playground .
 cd examples/golang-hello-world-webapp-fargate
 Update specific values to your setup in main.tf
 ```
+
+### Example golang-crud-webapp-fargate
+```terraform
+
+git clone https://github.com/bishy999/terraform-aws-devops-playground .
+cd examples/golang-crud-webapp-fargate
+Updat
 
 ### Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc
 ```terraform

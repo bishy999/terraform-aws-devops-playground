@@ -57,6 +57,7 @@ module "mydemo_ecs" {
   webapp_cpu            = 256 # fargate cpu setting different to ecs
   webapp_memory         = 512
 
+  enable_db         = true
   db_version        = "1.6"
   db_port           = 3306
   db_dockerhub_repo = "bishy999/mysql-simple-db"
