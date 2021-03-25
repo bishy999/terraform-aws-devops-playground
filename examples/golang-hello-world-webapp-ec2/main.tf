@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "eu-west-1"
+}
+
 module "mydemo_vpc" {
   source = "../../module/vpc"
 

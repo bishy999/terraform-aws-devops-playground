@@ -23,8 +23,8 @@ A "Hello World" Golang webapp with Docker deployed to AWS using Terraforms
 ## Version Requirements
 | Name | Version |
 |------|---------|
-| terraform | ~> 0.12.24 |
-| aws | ~> 2.61 |
+| terraform | ~> 0.14.6 |
+| aws | ~> 3.28.0 |
 
 
 ### Overview of golang-hello-world-webapp-ec2
